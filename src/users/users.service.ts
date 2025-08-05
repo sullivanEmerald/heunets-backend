@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { User, UserDocument } from './schema/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -32,5 +32,16 @@ export class UsersService {
         })
 
         return await user.save();
+    }
+
+    async getUser(userId: string) {
+        const user = await this.userModel.findById(userId)
+
+        if (!user) {
+            throw new NotFoundException('user was not found')
+        }
+
+
+        return user.toObject();
     }
 }

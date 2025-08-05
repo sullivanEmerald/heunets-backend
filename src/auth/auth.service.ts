@@ -39,7 +39,7 @@ export class AuthService {
             throw new ConflictException("Invalid credentials")
         }
 
-        return user;
+        return user.toObject();
     }
 
     async Login(user: any) {
@@ -50,8 +50,19 @@ export class AuthService {
             role: user.role
         }
 
+
         return {
+            message: 'successfully logged-in',
+            fullName: user.fullName,
+            email: user.email,
+            id: user._id,
+            role: user.role,
             access_token: this.jwtService.sign(payload)
+
         }
+    }
+
+    async getProfile(userId: string) {
+        return await this.usersService.getUser(userId)
     }
 }
