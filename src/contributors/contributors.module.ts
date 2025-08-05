@@ -18,6 +18,7 @@ import { User, UserSchema } from 'src/users/schema/user.schema';
 
     UsersModule],
   controllers: [ContributorsController],
-  providers: [ContributorsService]
+  providers: [ContributorsService],
+  exports: [ContributorsService]
 })
 export class ContributorsModule { }

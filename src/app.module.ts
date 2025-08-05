@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { Reflector } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { ContributorsModule } from './contributors/contributors.module';
+import { VolunteerModule } from './volunteer/volunteer.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -20,6 +21,7 @@ import { ContributorsModule } from './contributors/contributors.module';
     DatabaseModule,
     UsersModule,
     ContributorsModule,
+    VolunteerModule,
 
   ],
   controllers: [AppController],
