@@ -1,20 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { ContributorsService } from 'src/contributors/contributors.service';
-import { Post, PostDocument } from 'src/tasks/shema/create-task.schema';
 import { User, UserDocument } from 'src/users/schema/user.schema';
 import { CreateCommentDto } from '../tasks/comments/dto/comment.dto';
-import { Comment } from '../tasks/comments/schema/comment.shema';
 import { TasksService } from 'src/tasks/tasks.service';
+import { CommentsService } from 'src/tasks/comments/comments.service';
 
 @Injectable()
 export class VolunteerService {
     constructor(
         private readonly taskService: TasksService,
         @InjectModel(User.name) private userModel: Model<UserDocument>,
-        // @InjectModel(Post.name) private tasksModel: Model<PostDocument>,
-        // @InjectModel(Comment.name) private commentModel: Model<any>
+        private readonly commentService: CommentsService
     ) { }
 
 
@@ -40,22 +37,16 @@ export class VolunteerService {
 
     }
 
-    // async createComment(userId: string, commentDto: CreateCommentDto) {
-    //     const id = new Types.ObjectId(userId)
+    async createComment(userId: string, createCommentDto: CreateCommentDto) {
+        const id = new Types.ObjectId(userId)
 
-    //     const user = await this.userModel.findById(id)
+        const user = await this.userModel.findById(id)
 
-    //     if (!user) {
-    //         throw new NotFoundException('user not found')
-    //     }
+        if (!user) {
+            throw new NotFoundException('user not found')
+        }
 
-    //     const comment = new this.commentModel({
-    //         taskId: new Types.ObjectId(commentDto.taskId),
-    //         message: commentDto.message,
-    //         userId: new Types.ObjectId(userId)
-    //     })
+        return await this.commentService.postComment(userId, createCommentDto)
 
-    //     return await comment.save();
-
-    // }
+    }
 }

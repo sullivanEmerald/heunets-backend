@@ -19,8 +19,8 @@ export class VolunteerController {
         return await this.volunteerService.getTask(user.id, id)
     }
 
-    // @Post('create')
-    // async(@Body() createCommentDto: CreateCommentDto, @CurrentUser() user: any) {
-    //     return this.volunteerService.createComment(user.id, createCommentDto)
-    // }
+    @Post('create')
+    async(@Body() createCommentDto: CreateCommentDto, @CurrentUser() user: any) {
+        return this.volunteerService.createComment(user.id, createCommentDto)
+    }
 }
