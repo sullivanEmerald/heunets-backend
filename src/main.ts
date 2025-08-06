@@ -21,6 +21,8 @@ async function bootstrap() {
       try {
         const allowedDomains = [
           'http://localhost:5174',
+          "https://heunets-frontend.vercel.app",
+          "http://heunets-frontend.vercel.app"
           process.env.FRONTEND_URL,
           ...(configService.get('ALLOWED_DOMAINS') || '').split(',').filter(Boolean)
         ];
