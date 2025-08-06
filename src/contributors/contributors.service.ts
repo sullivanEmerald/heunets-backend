@@ -1,16 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTaskDto } from './dto/createTask.dto';
+import { CreateTaskDto } from '../tasks/dto/createTask.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, PostDocument } from './shema/create-task.schema';
+import { Post, PostDocument } from '../tasks/shema/create-task.schema';
 import { Model, Types } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
 import { User, UserDocument } from 'src/users/schema/user.schema';
+import { Comment } from 'src/tasks/comments/schema/comment.shema';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class ContributorsService {
     constructor(
         @InjectModel(Post.name) private taskModel: Model<PostDocument>,
-        @InjectModel(User.name) private userModel: Model<UserDocument>
+        @InjectModel(Comment.name) private CommentModel: Model<any>,
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
+        private readonly tasksService: TasksService,
     ) { }
 
     async createTask(userId: string, createTaskDto: CreateTaskDto) {
@@ -20,13 +24,8 @@ export class ContributorsService {
             throw new NotFoundException('user not found')
         }
 
-        const task = new this.taskModel({
-            title: createTaskDto.title,
-            description: createTaskDto.description,
-            createdBy: new Types.ObjectId(userId)
-        })
+        return await this.tasksService.createTask(userId, createTaskDto)
 
-        return await task.save();
     }
 
     async getAllTasks(userId: string) {
@@ -36,16 +35,7 @@ export class ContributorsService {
             throw new NotFoundException('User not found');
         }
 
-        const tasks = await this.taskModel.find({ createdBy: new Types.ObjectId(userId) });
-
-        const transformedTasks = tasks.map(task => ({
-            id: task._id,
-            title: task.title,
-            description: task.description,
-            createdAt: task.createdAt,
-        }));
-
-        return transformedTasks;
+        return await this.tasksService.getAllTasksByUser(userId)
     }
 
     async getTask(userId: string, taskId: string) {
@@ -55,19 +45,8 @@ export class ContributorsService {
             throw new NotFoundException('user not found')
         }
 
-        const task = await this.taskModel.findById(new Types.ObjectId(taskId))
+        return await this.tasksService.getTaskAndAppplications(taskId)
 
-        if (!task) {
-            throw new NotFoundException('Tasks not listed')
-        }
-
-        const transformedTask = {
-            id: task._id,
-            title: task.title,
-            description: task.description,
-            createdAt: task.createdAt
-        }
-        return transformedTask;
     }
 
 }

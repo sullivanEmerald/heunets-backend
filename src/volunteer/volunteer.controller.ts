@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
-import { CreateCommentDto } from './dto/comment.dto';
+import { CreateCommentDto } from '../tasks/comments/dto/comment.dto';
 
 @Controller('volunteer')
 export class VolunteerController {
@@ -14,8 +14,13 @@ export class VolunteerController {
         return await this.volunteerService.getTasks(user.id)
     }
 
-    @Post('create')
-    async(@Body() createCommentDto: CreateCommentDto, @CurrentUser() user: any) {
-        return this.volunteerService.createComment(user.id, createCommentDto)
+    @Get('task/:id')
+    async getTask(@Param('id') id: string, @CurrentUser() user: any) {
+        return await this.volunteerService.getTask(user.id, id)
     }
+
+    // @Post('create')
+    // async(@Body() createCommentDto: CreateCommentDto, @CurrentUser() user: any) {
+    //     return this.volunteerService.createComment(user.id, createCommentDto)
+    // }
 }

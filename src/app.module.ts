@@ -11,6 +11,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { ContributorsModule } from './contributors/contributors.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -22,6 +23,7 @@ import { VolunteerModule } from './volunteer/volunteer.module';
     UsersModule,
     ContributorsModule,
     VolunteerModule,
+    TasksModule,
 
   ],
   controllers: [AppController],

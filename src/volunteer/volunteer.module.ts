@@ -5,23 +5,17 @@ import { ContributorsModule } from 'src/contributors/contributors.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/users/schema/user.schema';
 import { UsersModule } from 'src/users/users.module';
-import { Post, PostSchema } from 'src/contributors/shema/create-task.schema';
-import { Comment, CommentSchema } from './schema/comment.shema';
+import { Post, PostSchema } from 'src/tasks/shema/create-task.schema';
+import { Comment, CommentSchema } from '../tasks/comments/schema/comment.shema';
+import { TasksModule } from 'src/tasks/tasks.module';
 
 @Module({
   imports: [ContributorsModule,
     UsersModule,
+    TasksModule,
     MongooseModule.forFeature([{
       name: User.name,
       schema: UserSchema
-    },
-    {
-      name: Post.name,
-      schema: PostSchema
-    },
-    {
-      name: Comment.name,
-      schema: CommentSchema
     },
     ])
   ],

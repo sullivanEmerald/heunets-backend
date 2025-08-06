@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { ContributorsService } from './contributors.service';
-import { CreateTaskDto } from './dto/createTask.dto';
+import { CreateTaskDto } from '../tasks/dto/createTask.dto';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @Controller('contributors')
