@@ -33,7 +33,7 @@ export class VolunteerService {
             throw new NotFoundException('user not found')
         }
 
-        return await this.taskService.getTask(taskId);
+        return await this.taskService.getTask(userId, taskId);
 
     }
 

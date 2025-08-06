@@ -1,9 +1,14 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { CreateCommentDto } from '../tasks/comments/dto/comment.dto';
+import { RolesGuard } from 'src/auth/guards/role-guard';
+import { UserRole } from 'src/users/schema/user.schema';
+import { Roles } from 'src/auth/decorators/role.decorator';
 
 @Controller('volunteer')
+@UseGuards(RolesGuard)
+@Roles(UserRole.volunteer)
 export class VolunteerController {
     constructor(
         private readonly volunteerService: VolunteerService

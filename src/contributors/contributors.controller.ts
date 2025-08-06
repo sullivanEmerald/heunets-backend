@@ -1,9 +1,14 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards } from '@nestjs/common';
 import { ContributorsService } from './contributors.service';
 import { CreateTaskDto } from '../tasks/dto/createTask.dto';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { RolesGuard } from 'src/auth/guards/role-guard';
+import { UserRole } from 'src/users/schema/user.schema';
+import { Roles } from 'src/auth/decorators/role.decorator';
 
 @Controller('contributors')
+@UseGuards(RolesGuard)
+@Roles(UserRole.contributor)
 export class ContributorsController {
     constructor(
         private readonly contributorService: ContributorsService

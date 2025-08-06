@@ -74,7 +74,19 @@ export class TasksService {
         return transformedTasks;
     }
 
-    async getTask(taskId: string) {
-        return await this.taskModel.findById(new Types.ObjectId(taskId)).lean()
+    async getTask(userId: string, taskId: string) {
+        const [task, isUserApplied] = await Promise.all([
+            this.taskModel.findById(new Types.ObjectId(taskId)).lean(),
+            this.commentModel.findOne({
+                userId: new Types.ObjectId(userId),
+                taskId: new Types.ObjectId(taskId),
+            }).lean(),
+        ]);
+
+        return {
+            task,
+            hasUserCommented: !!isUserApplied,
+        };
     }
+
 }
